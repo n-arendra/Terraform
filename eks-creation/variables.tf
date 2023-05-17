@@ -1,6 +1,6 @@
 
 variable "vpc_id" {
-    default = "vpc-0771b69fc0dcf2e11"
+    default = "create a dedicated VPC, provide the vpc id here like(vpc-0d95a6190a1ad9dcf)"
 }   
 
 variable "cluster_name" {
