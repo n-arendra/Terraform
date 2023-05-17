@@ -1,8 +1,3 @@
-variable "region" {
-    default = "ap-south-1"
-}
-
-
 
 variable "vpc_id" {
     default = "vpc-0771b69fc0dcf2e11"
