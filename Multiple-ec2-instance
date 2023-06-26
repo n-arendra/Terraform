@@ -1,0 +1,44 @@
+provider "aws" {
+    region = "ap-south-1"
+}
+
+resource "tls_private_key" "rsa_4096" {
+  algorithm   = "RSA"
+  rsa_bits =  4096
+}
+
+resource "aws_key_pair" "key_pair" {
+  key_name   = "ap-south"
+  public_key = tls_private_key.rsa_4096.public_key_openssh
+  }
+
+resource "local_file" "foo" {
+  content = tls_private_key.rsa_4096.private_key_pem
+  filename = "ap-south"
+}
+
+resource "aws_instance" "ec2-instance" {
+  ami           = values(var.instance-names)[count.index]
+  instance_type = "t3.micro"
+  key_name = aws_key_pair.key_pair.key_name
+  count = local.instance-count
+
+  tags = {
+    Name = keys(var.instance-names)[count.index]
+  }
+}
+
+#Variable section
+variable "instance-names" {
+  description = "Instance AMIs and Name"
+  type = map(string)
+  default = {
+    "instance-a" = "ami-057752b3f1d6c4d6c"
+    "instance-b" = "ami-057752b3f1d6c4d6c"
+    "instance-c" = "ami-057752b3f1d6c4d6c"
+  }
+}
+
+locals {
+    instance-count = 3
+}
