@@ -42,3 +42,28 @@ variable "instance-names" {
 locals {
     instance-count = 3
 }
+=======================================================================================================================================
+Writing access key and secret accress key in separate directory and using the credential from that file.
+#provider.tf
+provider "aws" {
+  region = "ap-south-1"
+  shared_credentials_files = ["C:\\Users\\Narendra Chavan\\.aws\\credentials"]
+  profile = "aws-devops"
+}
+
+#main.tf
+resource "aws_instance" "instance-1" {
+  ami           = "ami-057752b3f1d6c4d6c"
+  instance_type = "t3.micro"
+  key_name = "UseMe"
+
+  tags = {
+    Name = "instance-1"
+  }
+}
+
+#powershell terminal.
+aws configure --profile aws-devops
+
+It will prompt for access key and secret acces key.
+Provide it and it is located at C\Users\Narendra chavan\.aws
